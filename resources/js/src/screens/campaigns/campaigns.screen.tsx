@@ -5,27 +5,34 @@ import {
     SelectItem,
     useDisclosure,
 } from "@nextui-org/react";
-import {useCampaigns} from "./campaigns.context";
+import { useCampaigns } from "./campaigns.context";
 import CampaignModal from "./components/campaign.modal.tsx";
 import CampaignCard from "./components/campaign.card.tsx";
-import {JSX} from "react";
+import { JSX } from "react";
 
 const CampaignsScreen = () => {
-    const {isOpen, onOpen, onOpenChange} = useDisclosure();
-    const {campaignsData, campaignsDataSize, setCampaignsDataSize, campaignFilters, setCampaignFilters} = useCampaigns()
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const {
+        campaignsData,
+        campaignsDataSize,
+        setCampaignsDataSize,
+        campaignFilters,
+        setCampaignFilters,
+    } = useCampaigns();
 
     return (
         <div className="space-y-6">
-
             <div className="flex justify-between items-center gap-2">
                 <div className="flex items-center gap-2">
                     <div className="min-w-64">
                         <Input
                             value={campaignFilters?.search}
-                            onValueChange={(value) => setCampaignFilters((prevState) => ({
-                                ...prevState,
-                                search: value
-                            }))}
+                            onValueChange={(value) =>
+                                setCampaignFilters((prevState) => ({
+                                    ...prevState,
+                                    search: value,
+                                }))
+                            }
                             placeholder="Search campaigns..."
                             className="w-full"
                             size="lg"
@@ -33,16 +40,22 @@ const CampaignsScreen = () => {
                     </div>
                     <Select
                         size="sm"
-                        onSelectionChange={(keys) => setCampaignFilters((prevState) => ({
-                            ...prevState,
-                            activity_status: keys?.values()?.next()?.value
-                        }))}
+                        onSelectionChange={(keys) =>
+                            setCampaignFilters((prevState) => ({
+                                ...prevState,
+                                activity_status: keys?.values()?.next()?.value,
+                            }))
+                        }
                         className="min-w-36"
                         label="Filter by status"
                     >
-                        {['active', 'paused'].map((status): JSX.Element => (
-                            <SelectItem key={status}>{status.toUpperCase()}</SelectItem>
-                        ))}
+                        {["active", "paused"].map(
+                            (status): JSX.Element => (
+                                <SelectItem key={status}>
+                                    {status.toUpperCase()}
+                                </SelectItem>
+                            ),
+                        )}
                     </Select>
                 </div>
 
@@ -52,13 +65,16 @@ const CampaignsScreen = () => {
             </div>
 
             <div className="grid gap-4">
-                {campaignsData?.map((campaigns) => campaigns
-                    ?.map((campaign) => (
-                        <CampaignCard key={campaign.id} campaign={campaign}/>
-                    ))
+                {campaignsData?.map((campaigns) =>
+                    campaigns?.map((campaign) => (
+                        <CampaignCard key={campaign.id} campaign={campaign} />
+                    )),
                 )}
                 <Button
-                    isDisabled={(campaignsData && campaignsData[campaignsData.length - 1]?.length < 5)}
+                    isDisabled={
+                        campaignsData &&
+                        campaignsData[campaignsData.length - 1]?.length < 5
+                    }
                     onPress={() => setCampaignsDataSize(campaignsDataSize + 1)}
                 >
                     Load More
@@ -66,7 +82,7 @@ const CampaignsScreen = () => {
             </div>
             <CampaignModal isOpen={isOpen} onOpenChange={onOpenChange} />
         </div>
-    )
-}
+    );
+};
 
-export default CampaignsScreen
+export default CampaignsScreen;
