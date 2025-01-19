@@ -1,0 +1,792 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Campaign tool API Documentation",
+        "description": "",
+        "contact": {
+            "email": "hello@example.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/api/v1",
+            "description": "V1"
+        }
+    ],
+    "paths": {
+        "/campaigns/{id}": {
+            "patch": {
+                "tags": [
+                    "Campaign"
+                ],
+                "summary": "Update campaign",
+                "description": "Update campaign",
+                "operationId": "updateCampaign",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "activity_status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "active",
+                                            "paused"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "example": {
+                                "activity_status": "active"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "$ref": "#/components/responses/204"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/503"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/countries": {
+            "get": {
+                "tags": [
+                    "Country"
+                ],
+                "summary": "Display a listing of the resource.",
+                "description": "Display a listing of the resource.",
+                "operationId": "getCountriesList",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CountryResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/503"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/user": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Display authenticated user",
+                "description": "Display authenticated user",
+                "operationId": "getUser",
+                "parameters": [
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "description": "Include relationships",
+                        "schema": {
+                            "type": "string",
+                            "example": "workspaces"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/503"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/workspaces/{id}/campaigns": {
+            "get": {
+                "tags": [
+                    "Workspace"
+                ],
+                "summary": "Display a listing of the resource.",
+                "description": "Display a listing of the resource.",
+                "operationId": "getWorkspaceCampaignsList",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page[number]"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page[size]"
+                    },
+                    {
+                        "name": "include",
+                        "in": "query",
+                        "description": "Include relationships",
+                        "schema": {
+                            "type": "string",
+                            "example": ""
+                        }
+                    },
+                    {
+                        "name": "filter[search]",
+                        "in": "query",
+                        "description": "Search by title",
+                        "schema": {
+                            "type": "string",
+                            "example": ""
+                        }
+                    },
+                    {
+                        "name": "filter[activity_status]",
+                        "in": "query",
+                        "description": "Filter by activity status",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "active",
+                                "paused"
+                            ],
+                            "example": "paused"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CampaignResource"
+                                            }
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/meta"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/503"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Workspace"
+                ],
+                "summary": "Create campaign",
+                "description": "Create campaign",
+                "operationId": "storeWorkspaceCampaign",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "landing_page_url": {
+                                        "type": "string"
+                                    },
+                                    "activity_status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "active",
+                                            "paused"
+                                        ]
+                                    },
+                                    "payouts": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "country_id": {
+                                                    "type": "string"
+                                                },
+                                                "amount_per_interaction": {
+                                                    "type": "number"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "example": {
+                                "title": "Example Campaign",
+                                "landing_page_url": "https://google.com/",
+                                "activity_status": "paused",
+                                "payouts": [
+                                    {
+                                        "country_id": "550e8400-e29b-41d4-a716-446655440000",
+                                        "amount_per_interaction": 2.99
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/201"
+                    },
+                    "204": {
+                        "$ref": "#/components/responses/204"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/503"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Authenticate",
+                "description": "Authenticates the user and returns the Bearer token",
+                "operationId": "login",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "example": {
+                                "email": "hello@example.com",
+                                "password": "password"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "204": {
+                        "$ref": "#/components/responses/204"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/422"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/503"
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Unauthenticate",
+                "description": "Unauthenticate the user",
+                "operationId": "logout",
+                "responses": {
+                    "204": {
+                        "$ref": "#/components/responses/204"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/503"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/csrf-cookie": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Get CSRF Cookie",
+                "description": "To authenticate your SPA, your SPA's 'login' page should first make a request to the /sanctum/csrf-cookie endpoint to initialize CSRF protection for the application. https://laravel.com/docs/9.x/sanctum#spa-authentication",
+                "operationId": "csrfCookie",
+                "responses": {
+                    "204": {
+                        "$ref": "#/components/responses/204"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/503"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "meta": {
+                "description": "Meta data",
+                "properties": {
+                    "current_page": {
+                        "title": "Current Page",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "last_page": {
+                        "title": "Last Page",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "per_page": {
+                        "title": "Per Page",
+                        "type": "integer",
+                        "example": 30
+                    },
+                    "total": {
+                        "title": "Total",
+                        "type": "integer",
+                        "example": 100
+                    }
+                },
+                "type": "object"
+            },
+            "CampaignResource": {
+                "title": "CampaignResource",
+                "description": "Campaign resource",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "title": {
+                        "title": "Title",
+                        "type": "string",
+                        "example": "Example Campaign"
+                    },
+                    "landing_page_url": {
+                        "title": "Landing Page Url",
+                        "type": "string",
+                        "example": "https://example.com/"
+                    },
+                    "activity_status": {
+                        "title": "Activity Status",
+                        "type": "string",
+                        "enum": [
+                            "active",
+                            "paused"
+                        ],
+                        "example": "active"
+                    },
+                    "payouts": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PayoutResource"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "CampaignResource"
+                }
+            },
+            "CountryResource": {
+                "title": "CountryResource",
+                "description": "Country resource",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "name": {
+                        "title": "Name",
+                        "type": "string",
+                        "example": "Estonia"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "CountryResource"
+                }
+            },
+            "PayoutResource": {
+                "title": "PayoutResource",
+                "description": "Payout resource",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "amount_per_interaction": {
+                        "title": "Amount per interaction",
+                        "type": "number",
+                        "example": "2.99"
+                    },
+                    "country": {
+                        "$ref": "#/components/schemas/CountryResource"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "PayoutResource"
+                }
+            },
+            "UserResource": {
+                "title": "UserResource",
+                "description": "User resource",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "name": {
+                        "title": "Name",
+                        "type": "string",
+                        "example": "Test"
+                    },
+                    "email": {
+                        "title": "Email",
+                        "type": "string",
+                        "example": "hello@example.com"
+                    },
+                    "workspaces": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WorkspaceResource"
+                        }
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "UserResource"
+                }
+            },
+            "WorkspaceResource": {
+                "title": "WorkspaceResource",
+                "description": "Workspace resource",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "name": {
+                        "title": "Name",
+                        "type": "string",
+                        "example": "My Workspace"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "WorkspaceResource"
+                }
+            }
+        },
+        "responses": {
+            "500": {
+                "description": "Server Error",
+                "content": {
+                    "application/json": {
+                        "schema": {},
+                        "example": {
+                            "message": "Server Error."
+                        }
+                    }
+                }
+            },
+            "503": {
+                "description": "Service Unavailable - Maintenance Mode",
+                "content": {
+                    "application/json": {
+                        "schema": {},
+                        "example": {
+                            "message": "Service Unavailable."
+                        }
+                    }
+                }
+            },
+            "401": {
+                "description": "Unauthenticated",
+                "content": {
+                    "application/json": {
+                        "schema": {},
+                        "example": {
+                            "message": "Unauthenticated."
+                        }
+                    }
+                }
+            },
+            "404": {
+                "description": "Not Found",
+                "content": {
+                    "application/json": {
+                        "schema": {},
+                        "example": {
+                            "message": "Not Found."
+                        }
+                    }
+                }
+            },
+            "419": {
+                "description": "Session expired"
+            },
+            "422": {
+                "description": "Unprocessable Content",
+                "content": {
+                    "application/json": {
+                        "schema": {},
+                        "example": {
+                            "message": "The phone must be a number. (and 1 more error)",
+                            "errors": {
+                                "phone": [
+                                    "The phone must be a number.",
+                                    "The phone must be between 5 and 16 digits."
+                                ]
+                            }
+                        }
+                    }
+                }
+            },
+            "201": {
+                "description": "Created",
+                "content": {
+                    "application/json": {
+                        "schema": {},
+                        "example": []
+                    }
+                }
+            },
+            "204": {
+                "description": "No Content",
+                "content": {
+                    "application/json": {
+                        "schema": {},
+                        "example": []
+                    }
+                }
+            },
+            "resources": {
+                "description": "Successful operation",
+                "content": {
+                    "application/json": {
+                        "schema": {},
+                        "example": {
+                            "data": [],
+                            "meta": {
+                                "current_page": 1,
+                                "last_page": 1,
+                                "per_page": 5,
+                                "total": 5
+                            }
+                        }
+                    }
+                }
+            },
+            "resource": {
+                "description": "Successful operation",
+                "content": {
+                    "application/json": {
+                        "schema": {},
+                        "example": {
+                            "data": []
+                        }
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "id": {
+                "name": "id",
+                "in": "path",
+                "description": "Resource id",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "page[number]": {
+                "name": "page[number]",
+                "in": "query",
+                "description": "Page number",
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "page[size]": {
+                "name": "page[size]",
+                "in": "query",
+                "description": "Page size",
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "sort": {
+                "name": "sort",
+                "in": "query",
+                "description": "Sort by",
+                "schema": {
+                    "type": "string",
+                    "example": "name"
+                }
+            },
+            "include": {
+                "name": "include",
+                "in": "query",
+                "description": "Include relationships",
+                "schema": {
+                    "type": "string",
+                    "example": "workspaces,payouts"
+                }
+            }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Campaign",
+            "description": "Campaign"
+        },
+        {
+            "name": "Country",
+            "description": "Country"
+        },
+        {
+            "name": "User",
+            "description": "User"
+        },
+        {
+            "name": "Workspace",
+            "description": "Workspace"
+        },
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        }
+    ]
+}
