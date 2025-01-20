@@ -29,15 +29,17 @@ const Header = () => {
                                 <Button>{currentWorkspace?.name ?? ""}</Button>
                             </DropdownTrigger>
                             <DropdownMenu>
-                                {user?.workspaces?.map(
-                                    (workspace): JSX.Element => (
-                                        <DropdownItem
-                                            key={`workspace-${workspace?.id}`}
-                                        >
-                                            {workspace?.name}
-                                        </DropdownItem>
-                                    ),
-                                )}
+                                {user?.workspaces?.length
+                                    ? user?.workspaces?.map(
+                                          (workspace): JSX.Element => (
+                                              <DropdownItem
+                                                  key={`workspace-${workspace?.id}`}
+                                              >
+                                                  {workspace?.name}
+                                              </DropdownItem>
+                                          ),
+                                      )
+                                    : null}
                             </DropdownMenu>
                         </Dropdown>
                         <Dropdown>

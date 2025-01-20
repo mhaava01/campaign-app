@@ -40,8 +40,8 @@ type CampaignsContextType = {
     campaignFilters?: CampaignFiltersType;
     setCampaignFilters: (
         campaignFilters: (
-            prevState: CampaignFiltersType,
-        ) => CampaignFiltersType,
+            prevState: CampaignFiltersType | undefined,
+        ) => CampaignFiltersType | undefined,
     ) => void;
 };
 

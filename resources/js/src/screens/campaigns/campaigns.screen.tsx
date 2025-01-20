@@ -43,7 +43,8 @@ const CampaignsScreen = () => {
                         onSelectionChange={(keys) =>
                             setCampaignFilters((prevState) => ({
                                 ...prevState,
-                                activity_status: keys?.values()?.next()?.value,
+                                activity_status: (keys as any)?.values()?.next()
+                                    ?.value,
                             }))
                         }
                         className="min-w-36"
