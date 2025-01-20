@@ -22,9 +22,9 @@ const CampaignsScreen = () => {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center gap-2">
-                <div className="flex items-center gap-2">
-                    <div className="min-w-64">
+            <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-2">
+                <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
+                    <div className="min-w-64 w-full">
                         <Input
                             value={campaignFilters?.search}
                             onValueChange={(value) =>
@@ -59,7 +59,10 @@ const CampaignsScreen = () => {
                     </Select>
                 </div>
 
-                <Button onPress={onOpen} className="bg-primary">
+                <Button
+                    onPress={onOpen}
+                    className="bg-primary w-full sm:w-auto"
+                >
                     + Create Campaign
                 </Button>
             </div>

@@ -55,7 +55,7 @@ const CampaignCard: ({ campaign }: CampaignCardType) => JSX.Element = ({
                     <div className="grid grid-cols-4 gap-4 mt-6">
                         {campaign?.payouts?.map((payout) => (
                             <div key={`payout-${payout?.id}`}>
-                                <div className="text-xl font-semibold">
+                                <div className="text-medium sm:text-xl font-semibold whitespace-nowrap">
                                     {payout?.amount_per_interaction} $
                                 </div>
                                 <div className="flex items-center gap-2 mt-1">

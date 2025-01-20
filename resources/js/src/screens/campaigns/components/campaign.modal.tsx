@@ -8,7 +8,13 @@ import {
     ModalHeader,
     Switch,
 } from "@nextui-org/react";
-import { FormEventHandler, ReactNode, useCallback, useState } from "react";
+import {
+    FormEventHandler,
+    ReactNode,
+    useCallback,
+    useEffect,
+    useState,
+} from "react";
 import { StoreCampaignDataType, useCampaigns } from "../campaigns.context.tsx";
 import { toast } from "sonner";
 import useSWR from "swr";
@@ -85,6 +91,10 @@ const CampaignModal = ({
         },
         [],
     );
+
+    useEffect(() => {
+        if (isOpen) setCampaignData({});
+    }, [isOpen]);
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
