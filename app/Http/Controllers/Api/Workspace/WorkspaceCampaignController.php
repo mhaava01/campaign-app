@@ -9,6 +9,7 @@ use App\Models\Campaign;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use OpenApi\Annotations as OA;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -101,7 +102,7 @@ class WorkspaceCampaignController extends Controller
     {
         $this->gate($workspaceId);
 
-        $customers = QueryBuilder::for(Campaign::class)
+        $campaigns = QueryBuilder::for(Campaign::class)
             ->allowedIncludes(['payouts.country'])
             ->allowedFilters([
                 AllowedFilter::callback('search', fn (Builder $q, string $value): Builder => $q
@@ -112,7 +113,7 @@ class WorkspaceCampaignController extends Controller
             ->where('workspace_id', $workspaceId)
             ->jsonPaginate();
 
-        return CampaignResource::collection($customers);
+        return CampaignResource::collection($campaigns);
     }
 
     /**
@@ -161,13 +162,17 @@ class WorkspaceCampaignController extends Controller
     {
         $this->gate($workspaceId);
 
-        $consumer = Campaign::create([
-            ...$request->validated(),
-            'workspace_id' => $workspaceId,
-        ]);
+        $campaign = DB::transaction(function () use ($request, $workspaceId) {
+            $campaign = Campaign::create([
+                ...$request->validated(),
+                'workspace_id' => $workspaceId,
+            ]);
 
-        $consumer->payouts()->createMany($request->validated('payouts'));
+            $campaign->payouts()->createMany($request->validated('payouts'));
 
-        return new CampaignResource($consumer);
+            return $campaign;
+        });
+
+        return new CampaignResource($campaign);
     }
 }
